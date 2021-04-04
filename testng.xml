@@ -12,6 +12,7 @@
             <class name="com.restinit.getapi.GetAPITests2" />
             <class name="com.restinit.getapi.GetAPITests3" />
             <class name="com.restinit.getapi.GetAPITests4" />
+            <class name="com.restinit.getapi.JsonValidations" />
         </classes>
     </test>
 
