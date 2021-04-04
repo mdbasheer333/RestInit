@@ -14,7 +14,6 @@ class GetAPITests4 extends RestInitBase {
 		restInit.performGetApi("/api/users");
 		restInit.setQueryParameters("page","2");
 		assertThat(restInit.getJsonPathDataValue("data[0].email")).isEqualTo("george.bluth@reqres.in");
-
 	}
 
 }
