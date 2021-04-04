@@ -6,6 +6,7 @@ import io.restassured.path.json.JsonPath;
 import org.testng.annotations.Test;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -56,6 +57,10 @@ class JsonValidations extends RestInitBase {
 		//2. sum of the all books prices is 53.92
 		float aFloat = jsonPath.getFloat("store.book.price.sum()");
 		System.out.println(aFloat);
+
+		//3. get the data of specific author 'Herman Melville' into map
+		Map<String, String> map = jsonPath.getMap("store.book.findAll{e->e.author=='Herman Melville'}[0]");
+		System.out.println(map);
 
 	}
 
