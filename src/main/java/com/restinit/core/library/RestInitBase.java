@@ -16,7 +16,7 @@ public class RestInitBase extends AbstractTestNGSpringContextTests {
     @Autowired
     public RestInitImpl restInit;
 
-    @Value("${logrequestparameters}")
+    @Value("${logging}")
     Boolean logging;
 
     @BeforeSuite
