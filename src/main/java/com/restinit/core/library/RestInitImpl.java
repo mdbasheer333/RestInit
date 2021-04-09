@@ -1,15 +1,10 @@
 package com.restinit.core.library;
 
-import com.aventstack.extentreports.ExtentTest;
 import io.restassured.RestAssured;
-import io.restassured.listener.ResponseValidationFailureListener;
+import io.restassured.http.Headers;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBodyExtractionOptions;
-import io.restassured.specification.QueryableRequestSpecification;
 import io.restassured.specification.RequestSpecification;
-import io.restassured.specification.ResponseSpecification;
-import io.restassured.specification.SpecificationQuerier;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.stereotype.Component;
@@ -18,7 +13,7 @@ import java.util.Map;
 
 
 @Component(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class RestInitImpl {
+public class RestInitImpl{
 
     @Value("${baseUri}")
     String baseUri;
@@ -37,10 +32,8 @@ public class RestInitImpl {
     public void createNewConnection() {
         RestAssured.reset();
         RestAssured.baseURI = baseUri;
-
         RestInitListener.getLocalThreadExtentTest().get().info("baseURI: " + baseUri);
         this.requestSpecification.set(RestAssured.given());
-
     }
 
     public void clearExistingConnection() {
@@ -88,6 +81,10 @@ public class RestInitImpl {
         return this.response.get().getHeader(expectedHeader);
     }
 
+    public Headers getHeaders(){
+        return this.response.get().getHeaders();
+    }
+
     public void setHeaders(Map<String,String> headers){
         this.requestSpecification.get().headers(headers);
     }
@@ -96,4 +93,11 @@ public class RestInitImpl {
         this.requestSpecification.get().header(header, headerValue);
     }
 
+    public int getStatusCode(){
+        return this.response.get().getStatusCode();
+    }
+
+    public String getStatusLine(){
+        return this.response.get().statusLine();
+    }
 }

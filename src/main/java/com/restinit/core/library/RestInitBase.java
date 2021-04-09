@@ -36,7 +36,6 @@ public class RestInitBase extends AbstractTestNGSpringContextTests {
 
     @BeforeMethod
     public void beforeMethod() {
-
     }
 
     @AfterMethod
@@ -51,6 +50,7 @@ public class RestInitBase extends AbstractTestNGSpringContextTests {
             extentTest.info("REQUEST DETAILS getContentType: "+queryable.getContentType());
             extentTest.info("REQUEST DETAILS getBody: "+queryable.getBody());
         }
+        restInit.clearExistingConnection();
     }
 
     @AfterClass

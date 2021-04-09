@@ -8,8 +8,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class GetAPITests2 extends RestInitBase {
 
-
-
 	@Test
 	public void mySpringBoot2(){
 		restInit.createNewConnection();
@@ -18,7 +16,5 @@ class GetAPITests2 extends RestInitBase {
 		assertThat(restInit.getJsonPathDataValue("data[0].email")).isEqualTo("george.bluth1@reqres.in");
 
 	}
-
-
 
 }
