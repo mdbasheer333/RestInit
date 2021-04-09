@@ -67,6 +67,13 @@ public class RestInitImpl{
         RestInitListener.getLocalThreadExtentTest().get().info("Response body is "+ this.response.get().getBody().asString());
     }
 
+    public void performPostApi(String requestBody, String endPoint) {
+        this.response.set(this.requestSpecification.get().body(requestBody).post(endPoint));
+        this.responseBody.set(this.response.get().getBody());
+        RestInitListener.getLocalThreadExtentTest().get().info("POST Method and endpoint is : " + endPoint);
+        RestInitListener.getLocalThreadExtentTest().get().info("Response body is "+ this.response.get().getBody().asString());
+    }
+
     public Response getResponse(){
         return this.response.get();
     }

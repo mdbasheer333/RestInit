@@ -45,7 +45,7 @@ class JsonValidations extends RestInitBase {
 			"   }\n" +
 			"}";
 
-	@Test(enabled = false)
+	@Test
 	public void mySpringBoot5(){
 
 		JsonPath jsonPath=JsonPath.from(jsonData);
