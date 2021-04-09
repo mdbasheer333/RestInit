@@ -1,7 +1,6 @@
 package com.restinit.core.library;
 
 import com.aventstack.extentreports.ExtentTest;
-import com.restinit.core.library.RestInitImpl;
 import io.restassured.specification.QueryableRequestSpecification;
 import io.restassured.specification.SpecificationQuerier;
 import org.springframework.beans.factory.annotation.Autowired;
