@@ -1,8 +1,10 @@
 package com.restinit.core.library;
 
 import com.aventstack.extentreports.ExtentTest;
+import com.restinit.core.support.Routes;
 import io.restassured.specification.QueryableRequestSpecification;
 import io.restassured.specification.RequestSpecification;
+import io.restassured.specification.ResponseSpecification;
 import io.restassured.specification.SpecificationQuerier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,22 +18,22 @@ public class RestInitBase extends AbstractTestNGSpringContextTests {
     @Autowired
     public RestInitImpl restInit;
 
+    @Autowired
+    public Routes routes;
+
     @Value("${logging}")
     Boolean logging;
 
     @BeforeSuite
     public void beforeSuite() {
-
     }
 
     @BeforeTest
     public void beforeTest() {
-
     }
 
     @BeforeClass
     public void beforeClass() {
-
     }
 
     @BeforeMethod
@@ -47,30 +49,20 @@ public class RestInitBase extends AbstractTestNGSpringContextTests {
                 extentTest.warning("REQUEST DETAILS not found");
                 return;
             }
-            QueryableRequestSpecification queryable = SpecificationQuerier.query(requestSpecification);
-            extentTest.info("REQUEST DETAILS getPathParams: " + queryable.getPathParams());
-            extentTest.info("REQUEST DETAILS  getQueryParams: "+queryable.getQueryParams());
-            extentTest.info("REQUEST DETAILS  getCookies: "+queryable.getCookies());
-            extentTest.info("REQUEST DETAILS getHeaders: "+queryable.getHeaders());
-            extentTest.info("REQUEST DETAILS getContentType: "+queryable.getContentType());
-            extentTest.info("REQUEST DETAILS getBody: "+queryable.getBody());
         }
         restInit.clearExistingConnection();
     }
 
     @AfterClass
     public void afterClass() {
-
     }
 
     @AfterTest
     public void afterTest() {
-
     }
 
     @AfterSuite
     public void afterSuite() {
-
     }
 
 }

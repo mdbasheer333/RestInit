@@ -3,11 +3,9 @@ package com.restinit.core.library;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.restinit.core.reporting.ReportingService;
-import org.testng.ITestContext;
-import org.testng.ITestListener;
-import org.testng.ITestResult;
+import org.testng.*;
 
-public class RestInitListener implements ITestListener {
+public class RestInitListener implements ITestListener, IInvokedMethodListener {
 
     private static ExtentReports extent = ReportingService.createInstance();
     private static ThreadLocal<ExtentTest> test = new ThreadLocal<>();
@@ -32,7 +30,9 @@ public class RestInitListener implements ITestListener {
         System.out.println((result.getMethod().getMethodName() + " started!"));
         ExtentTest extentTest = extent.createTest(result.getMethod().getMethodName(), result.getMethod().getDescription());
         test.set(extentTest);
-
+    }
+    @Override
+    public void beforeInvocation(IInvokedMethod method, ITestResult result) {
     }
 
     @Override

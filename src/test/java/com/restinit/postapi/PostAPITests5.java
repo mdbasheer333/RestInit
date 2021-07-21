@@ -18,10 +18,10 @@ class PostAPITests5 extends RestInitBase {
 				"    \"name\": \"morpheus\",\n" +
 				"    \"job\": \"leader\"\n" +
 				"}";
-		restInit.performPostApi(body,"/api/users");
+		restInit.performPostApi(body,routes.getAllUsersEndPoint());
 
 		String resBody=restInit.getResponse().getBody().asString();
-		System.out.printf(resBody);
+		System.out.println(resBody);
 
 		ExtentTest extentTest = RestInitListener.getLocalThreadExtentTest().get();
 		extentTest.info("RESPONSE BODY IS : \n" + resBody);
