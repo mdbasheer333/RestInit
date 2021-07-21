@@ -2,7 +2,6 @@ package com.restinit.core.support;
 
 import io.restassured.builder.RequestSpecBuilder;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.stereotype.Component;
 
 @Component

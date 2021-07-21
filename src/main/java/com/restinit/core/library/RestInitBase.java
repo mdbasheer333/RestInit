@@ -2,10 +2,7 @@ package com.restinit.core.library;
 
 import com.aventstack.extentreports.ExtentTest;
 import com.restinit.core.support.Routes;
-import io.restassured.specification.QueryableRequestSpecification;
 import io.restassured.specification.RequestSpecification;
-import io.restassured.specification.ResponseSpecification;
-import io.restassured.specification.SpecificationQuerier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
