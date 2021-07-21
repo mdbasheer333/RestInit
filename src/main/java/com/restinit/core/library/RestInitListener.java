@@ -7,8 +7,8 @@ import org.testng.*;
 
 public class RestInitListener implements ITestListener, IInvokedMethodListener {
 
-    private static ExtentReports extent = ReportingService.createInstance();
-    private static ThreadLocal<ExtentTest> test = new ThreadLocal<>();
+    private static final ExtentReports extent = ReportingService.createInstance();
+    private static final ThreadLocal<ExtentTest> test = new ThreadLocal<>();
 
     public static synchronized ThreadLocal<ExtentTest> getLocalThreadExtentTest() {
         return test;

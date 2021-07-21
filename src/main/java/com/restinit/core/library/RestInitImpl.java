@@ -31,7 +31,6 @@ public class RestInitImpl{
     private final ThreadLocal<Response> response= new ThreadLocal<>();
     private final ThreadLocal<RequestSpecBuilder> requestSpecBuilder= new ThreadLocal<>();
 
-
     //ExtentTest extentTest = RestInitListener.getLocalThreadExtentTest().get();
 
     public RequestSpecification getRequestSpecification(){
