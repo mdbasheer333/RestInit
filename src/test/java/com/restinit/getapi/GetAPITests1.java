@@ -19,6 +19,8 @@ class GetAPITests1 extends RestInitBase {
         restInit.createNewConnection(reqSpecBuilderPool.getCommonSpecPathParam());
         restInit.performGetApi(routes.getUserEndPoint());
         assertThat(restInit.getJsonPathDataValue("data.email")).isEqualTo("janet.weaver@reqres.in");
+        statusCode.statusCodeToBe(200,"status code mismatch");
+        statusLine.statusLineToBe("HTTP/1.1 200 OK","status code mismatch");
     }
 
 }

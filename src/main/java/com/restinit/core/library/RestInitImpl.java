@@ -1,21 +1,20 @@
 package com.restinit.core.library;
 
-import com.aventstack.extentreports.ExtentTest;
+import com.restinit.core.reporting.ReqQueryLogging;
+import com.restinit.core.validation.StatusCode;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.Headers;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBodyExtractionOptions;
-import io.restassured.specification.QueryableRequestSpecification;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
-import io.restassured.specification.SpecificationQuerier;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
-
 
 @Component(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class RestInitImpl{
@@ -23,14 +22,13 @@ public class RestInitImpl{
     @Value("${baseUri}")
     String baseUri;
 
-    @Value("${logging}")
-    Boolean logging;
+    @Autowired
+    ReqQueryLogging reqQueryLogging;
 
     private final ThreadLocal<RequestSpecification> requestSpecification= new ThreadLocal<>();
     private final ThreadLocal<ResponseBodyExtractionOptions> responseBody= new ThreadLocal<>();
     private final ThreadLocal<Response> response= new ThreadLocal<>();
-    private final ThreadLocal<RequestSpecBuilder> requestSpecBuilder= new ThreadLocal<>();
-
+    //private final ThreadLocal<RequestSpecBuilder> requestSpecBuilder= new ThreadLocal<>();
     //ExtentTest extentTest = RestInitListener.getLocalThreadExtentTest().get();
 
     public RequestSpecification getRequestSpecification(){
@@ -55,6 +53,12 @@ public class RestInitImpl{
         RestAssured.reset();
     }
 
+    public void clearThreads() {
+        requestSpecification.remove();
+        responseBody.remove();
+        response.remove();
+    }
+
     public void setQueryParameters(Map<String, String> queryParams) {
         this.requestSpecification.get().queryParams(queryParams);
         RestInitListener.getLocalThreadExtentTest().get().info("queryParams: " + queryParams.toString());
@@ -76,40 +80,19 @@ public class RestInitImpl{
     }
 
     public void performGetApi(String endPoint) {
-        logIfSetTrue();
+        reqQueryLogging.logIfSetTrue(getRequestSpecification());
         this.response.set(this.requestSpecification.get().get(endPoint));
         this.responseBody.set(this.response.get().getBody());
         RestInitListener.getLocalThreadExtentTest().get().info("GET Method and endpoint is : " + endPoint);
         RestInitListener.getLocalThreadExtentTest().get().info("Response body is "+ this.response.get().getBody().asString());
     }
 
-    private void logIfSetTrue() {
-        if(logging) {
-            ExtentTest extentTest = RestInitListener.getLocalThreadExtentTest().get();
-            RequestSpecification requestSpecification = getRequestSpecification();
-            if(null==requestSpecification){
-                extentTest.warning("REQUEST DETAILS not found");
-                return;
-            }
-            logRequestSpecification(extentTest,requestSpecification);
-        }
-    }
 
-    private void logRequestSpecification(ExtentTest extentTest,RequestSpecification requestSpecification){
-        QueryableRequestSpecification queryable = SpecificationQuerier.query(requestSpecification);
-        extentTest.info("------------REQUEST DETAILS------------");
-        extentTest.info("REQUEST DETAILS PathParams: " + queryable.getPathParams());
-        extentTest.info("REQUEST DETAILS  QueryParams: "+queryable.getQueryParams());
-        extentTest.info("REQUEST DETAILS  Cookies: "+queryable.getCookies());
-        extentTest.info("REQUEST DETAILS Headers: "+queryable.getHeaders());
-        extentTest.info("REQUEST DETAILS ContentType: "+queryable.getContentType());
-        extentTest.info("REQUEST DETAILS Body: "+queryable.getBody());
-    }
 
     public void performPostApi(String requestBody, String endPoint) {
         this.response.set(this.requestSpecification.get().body(requestBody).post(endPoint));
         this.responseBody.set(this.response.get().getBody());
-        logIfSetTrue();
+        reqQueryLogging.logIfSetTrue(getRequestSpecification());
         RestInitListener.getLocalThreadExtentTest().get().info("POST Method and endpoint is : " + endPoint);
         RestInitListener.getLocalThreadExtentTest().get().info("Response body is "+ this.response.get().getBody().asString());
     }
@@ -138,18 +121,6 @@ public class RestInitImpl{
 
     public void setHeaders(String header, String headerValue){
         this.requestSpecification.get().header(header, headerValue);
-    }
-
-    public int getStatusCode(){
-        return this.response.get().getStatusCode();
-    }
-
-    public String getStatusLine(){
-        return this.response.get().statusLine();
-    }
-
-    public ResponseSpecification getResponseSpecification() {
-        return null;
     }
 
 }

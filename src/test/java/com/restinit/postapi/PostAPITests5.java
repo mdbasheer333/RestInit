@@ -27,7 +27,7 @@ class PostAPITests5 extends RestInitBase {
 		extentTest.info("RESPONSE BODY IS : \n" + resBody);
 
 		assertThat(restInit.getJsonPathDataValue("id")).isNotBlank();
-
+		statusCode.statusCodeToBe(201,"post request");
 
 	}
 

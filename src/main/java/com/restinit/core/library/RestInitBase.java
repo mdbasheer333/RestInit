@@ -2,6 +2,8 @@ package com.restinit.core.library;
 
 import com.aventstack.extentreports.ExtentTest;
 import com.restinit.core.support.Routes;
+import com.restinit.core.validation.StatusCode;
+import com.restinit.core.validation.StatusLine;
 import io.restassured.specification.RequestSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +16,12 @@ public class RestInitBase extends AbstractTestNGSpringContextTests {
 
     @Autowired
     public RestInitImpl restInit;
+
+    @Autowired
+    public StatusCode statusCode;
+
+    @Autowired
+    public StatusLine statusLine;
 
     @Autowired
     public Routes routes;
@@ -48,6 +56,7 @@ public class RestInitBase extends AbstractTestNGSpringContextTests {
             }
         }
         restInit.clearExistingConnection();
+        restInit.clearThreads();
     }
 
     @AfterClass
