@@ -2,6 +2,7 @@ package com.restinit.core.library;
 
 import com.aventstack.extentreports.ExtentTest;
 import io.restassured.specification.QueryableRequestSpecification;
+import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.SpecificationQuerier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,8 +41,13 @@ public class RestInitBase extends AbstractTestNGSpringContextTests {
     @AfterMethod
     public void afterMethod() {
         if(logging) {
-            QueryableRequestSpecification queryable = SpecificationQuerier.query(restInit.getRequestSpecification());
             ExtentTest extentTest = RestInitListener.getLocalThreadExtentTest().get();
+            RequestSpecification requestSpecification = restInit.getRequestSpecification();
+            if(null==requestSpecification){
+                extentTest.warning("REQUEST DETAILS not found");
+                return;
+            }
+            QueryableRequestSpecification queryable = SpecificationQuerier.query(requestSpecification);
             extentTest.info("REQUEST DETAILS getPathParams: " + queryable.getPathParams());
             extentTest.info("REQUEST DETAILS  getQueryParams: "+queryable.getQueryParams());
             extentTest.info("REQUEST DETAILS  getCookies: "+queryable.getCookies());

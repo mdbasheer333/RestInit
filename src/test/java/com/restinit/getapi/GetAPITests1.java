@@ -7,7 +7,8 @@ import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class GetAPITests1 extends RestInitBase {
+class
+GetAPITests1 extends RestInitBase {
 
 	@Test
 	public void mySpringBoot1(){

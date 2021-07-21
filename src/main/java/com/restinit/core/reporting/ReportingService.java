@@ -12,14 +12,16 @@ import java.io.File;
 @Lazy
 @Component
 public class ReportingService {
+
     private static ExtentReports extent;
-    private static String reportFileName = "Test-Automaton-Report.html";
-    private static String windowsPath = System.getProperty("user.dir") + "\\RestInitResults";
-    private static String winReportFileLoc = windowsPath + "\\" + reportFileName;
+    private static final String reportFileName = "Test-Automaton-Report.html";
+    private static final String windowsPath = System.getProperty("user.dir") + "\\RestInitResults";
+    private static final String winReportFileLoc = windowsPath + "\\" + reportFileName;
 
     public static ExtentReports getInstance() {
-        if (extent == null)
+        if (extent == null) {
             createInstance();
+        }
         return extent;
     }
 
@@ -38,7 +40,6 @@ public class ReportingService {
         reportFileLocation = winReportFileLoc;
         createReportPath(windowsPath);
         System.out.println("ExtentReport Path for WINDOWS: " + windowsPath + "\n");
-
         return reportFileLocation;
     }
 
@@ -49,13 +50,12 @@ public class ReportingService {
             if (testDirectory.mkdir()) {
                 System.out.println("Directory: " + path + " is created!");
             } else {
-                System.out.println("Failed to create directory: " + path);
+                throw  new RuntimeException("Directory: " + path + " already exists!");
             }
         } else {
             System.out.println("Directory already exists: " + path);
         }
     }
-
 
 }
 
