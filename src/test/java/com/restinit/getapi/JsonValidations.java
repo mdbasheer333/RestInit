@@ -49,7 +49,6 @@ class JsonValidations extends RestInitBase {
 	public void mySpringBoot5(){
 
 		JsonPath jsonPath=JsonPath.from(jsonData);
-
 		//1. the titles of the books with a price less than 10 are "Sayings of the Century" and "Moby Dick"
 		List<String> list = jsonPath.getList("store.book.findAll{e->e.price<10}.title");
 		System.out.println(list);

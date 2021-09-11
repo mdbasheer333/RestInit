@@ -8,6 +8,11 @@ public class Routes {
 
     private final String userEndPoint = "/api/users/{user}";
     private final String allUsersEndPoint = "/api/users";
+    private final String regSuccess="/api/users";
+
+    public String getRegSuccess(){
+        return regSuccess;
+    }
 
     public String getUserEndPoint() {
         return userEndPoint;

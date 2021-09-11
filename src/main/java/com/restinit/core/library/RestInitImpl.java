@@ -1,23 +1,22 @@
 package com.restinit.core.library;
 
 import com.restinit.core.reporting.ReqQueryLogging;
-import com.restinit.core.validation.StatusCode;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.Headers;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBodyExtractionOptions;
 import io.restassured.specification.RequestSpecification;
-import io.restassured.specification.ResponseSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Type;
 import java.util.Map;
 
 @Component(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class RestInitImpl{
+public class RestInitImpl {
 
     @Value("${baseUri}")
     String baseUri;
@@ -25,13 +24,13 @@ public class RestInitImpl{
     @Autowired
     ReqQueryLogging reqQueryLogging;
 
-    private final ThreadLocal<RequestSpecification> requestSpecification= new ThreadLocal<>();
-    private final ThreadLocal<ResponseBodyExtractionOptions> responseBody= new ThreadLocal<>();
-    private final ThreadLocal<Response> response= new ThreadLocal<>();
+    private final ThreadLocal<RequestSpecification> requestSpecification = new ThreadLocal<>();
+    private final ThreadLocal<ResponseBodyExtractionOptions> responseBody = new ThreadLocal<>();
+    private final ThreadLocal<Response> response = new ThreadLocal<>();
     //private final ThreadLocal<RequestSpecBuilder> requestSpecBuilder= new ThreadLocal<>();
     //ExtentTest extentTest = RestInitListener.getLocalThreadExtentTest().get();
 
-    public RequestSpecification getRequestSpecification(){
+    public RequestSpecification getRequestSpecification() {
         return this.requestSpecification.get();
     }
 
@@ -65,13 +64,13 @@ public class RestInitImpl{
     }
 
     public void setQueryParameters(String key, String value) {
-        this.requestSpecification.get().queryParam(key,value);
-        RestInitListener.getLocalThreadExtentTest().get().info("queryParams: " + key + ", "+value);
+        this.requestSpecification.get().queryParam(key, value);
+        RestInitListener.getLocalThreadExtentTest().get().info("queryParams: " + key + ", " + value);
     }
 
     public void setPathParameters(String key, String value) {
-        this.requestSpecification.get().pathParams(key,value);
-        RestInitListener.getLocalThreadExtentTest().get().info("pathParams: " + key + ", "+value);
+        this.requestSpecification.get().pathParams(key, value);
+        RestInitListener.getLocalThreadExtentTest().get().info("pathParams: " + key + ", " + value);
     }
 
     public void setPathParams(Map<String, String> pathParams) {
@@ -84,9 +83,8 @@ public class RestInitImpl{
         this.response.set(this.requestSpecification.get().get(endPoint));
         this.responseBody.set(this.response.get().getBody());
         RestInitListener.getLocalThreadExtentTest().get().info("GET Method and endpoint is : " + endPoint);
-        RestInitListener.getLocalThreadExtentTest().get().info("Response body is "+ this.response.get().getBody().asString());
+        RestInitListener.getLocalThreadExtentTest().get().info("Response body is " + this.response.get().getBody().asString());
     }
-
 
 
     public void performPostApi(String requestBody, String endPoint) {
@@ -94,33 +92,41 @@ public class RestInitImpl{
         this.responseBody.set(this.response.get().getBody());
         reqQueryLogging.logIfSetTrue(getRequestSpecification());
         RestInitListener.getLocalThreadExtentTest().get().info("POST Method and endpoint is : " + endPoint);
-        RestInitListener.getLocalThreadExtentTest().get().info("Response body is "+ this.response.get().getBody().asString());
+        RestInitListener.getLocalThreadExtentTest().get().info("Response body is " + this.response.get().getBody().asString());
     }
 
-    public Response getResponse(){
+    public Response getResponse() {
         return this.response.get();
     }
 
     public String getJsonPathDataValue(String jsonPath) {
         String actual = this.responseBody.get().jsonPath().getString(jsonPath);
-        RestInitListener.getLocalThreadExtentTest().get().info("Value of json path  "+ jsonPath + " is "+actual);
+        RestInitListener.getLocalThreadExtentTest().get().info("Value of json path  " + jsonPath + " is " + actual);
         return actual;
     }
 
-    public String getHeader(String expectedHeader){
+    public String getHeader(String expectedHeader) {
         return this.response.get().getHeader(expectedHeader);
     }
 
-    public Headers getHeaders(){
+    public Headers getHeaders() {
         return this.response.get().getHeaders();
     }
 
-    public void setHeaders(Map<String,String> headers){
+    public void setHeaders(Map<String, String> headers) {
         this.requestSpecification.get().headers(headers);
     }
 
-    public void setHeaders(String header, String headerValue){
+    public void setHeaders(String header, String headerValue) {
         this.requestSpecification.get().header(header, headerValue);
+    }
+
+   /* public <T> T getResponseAsPOJO(Type obj) {
+        return this.responseBody.get().as(obj);
+    }*/
+
+    public <T> T getResponseAsPOJO(Class<T> obj) {
+        return this.responseBody.get().as(obj);
     }
 
 }
